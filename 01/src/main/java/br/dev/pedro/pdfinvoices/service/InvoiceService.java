@@ -17,7 +17,7 @@ public class InvoiceService {
     }
 
     public List<Invoice> findAll() {
-        return invoices;
+        return this.invoices;
     }
 
     public Invoice create(String userID, Integer amount) {
