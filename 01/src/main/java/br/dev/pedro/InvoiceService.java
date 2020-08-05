@@ -1,9 +1,20 @@
 package br.dev.pedro;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 public class InvoiceService {
+    List<Invoice> invoices = new CopyOnWriteArrayList<>();
+
+    public List<Invoice> findAll() {
+        return invoices;
+    }
+
     public Invoice create(String userID, Integer amount) {
         // TODO(Pedro): create the real PDF
-        return new Invoice(userID, amount, "http://www.africau.edu/images/default/sample.pdf");
+        Invoice invoice =  new Invoice(userID, amount, "http://www.africau.edu/images/default/sample.pdf");
+        this.invoices.add(invoice);
+        return invoice;
     }
 
 

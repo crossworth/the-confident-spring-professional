@@ -7,8 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class PDFInvoiceServlet extends HttpServlet {
+    private InvoiceService invoiceService = new InvoiceService();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,7 +28,8 @@ public class PDFInvoiceServlet extends HttpServlet {
             );
         } else if (req.getRequestURI().equalsIgnoreCase("/invoices")) {
             resp.setContentType("application/json; charset=UTF-8");
-            resp.getWriter().print("[]");
+            List<Invoice> invoices = this.invoiceService.findAll();
+            resp.getWriter().print(this.objectMapper.writeValueAsString(invoices));
         }
     }
 
@@ -40,9 +44,9 @@ public class PDFInvoiceServlet extends HttpServlet {
         String userID = req.getParameter("user_id");
         Integer amount = Integer.valueOf(req.getParameter("amount"));
 
-        Invoice invoice = new InvoiceService().create(userID, amount);
+        Invoice invoice = this.invoiceService.create(userID, amount);
         resp.setContentType("application/json; charset=UTF-8");
-        String json = new ObjectMapper().writeValueAsString(invoice);
+        String json = this.objectMapper.writeValueAsString(invoice);
         resp.getWriter().print(json);
     }
 }
