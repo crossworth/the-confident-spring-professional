@@ -1,5 +1,6 @@
 package br.dev.pedro.pdfinvoices.service;
 
+import br.dev.pedro.pdfinvoices.context.Application;
 import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.model.User;
 
@@ -14,7 +15,7 @@ public class InvoiceService {
     }
 
     public Invoice create(String userID, Integer amount) {
-        User user = new UserService().findByID(userID);
+        User user = Application.userService.findByID(userID);
         if (user == null) {
             throw new IllegalStateException();
         }
