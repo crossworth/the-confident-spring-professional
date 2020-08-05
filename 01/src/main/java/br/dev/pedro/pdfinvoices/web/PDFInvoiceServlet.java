@@ -1,5 +1,6 @@
 package br.dev.pedro.pdfinvoices.web;
 
+import br.dev.pedro.pdfinvoices.context.Application;
 import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.service.InvoiceService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,9 +13,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class PDFInvoiceServlet extends HttpServlet {
-    private InvoiceService invoiceService = new InvoiceService();
-    private ObjectMapper objectMapper = new ObjectMapper();
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -30,8 +28,8 @@ public class PDFInvoiceServlet extends HttpServlet {
             );
         } else if (req.getRequestURI().equalsIgnoreCase("/invoices")) {
             resp.setContentType("application/json; charset=UTF-8");
-            List<Invoice> invoices = this.invoiceService.findAll();
-            resp.getWriter().print(this.objectMapper.writeValueAsString(invoices));
+            List<Invoice> invoices = Application.invoiceService.findAll();
+            resp.getWriter().print(Application.objectMapper.writeValueAsString(invoices));
         }
     }
 
@@ -46,9 +44,9 @@ public class PDFInvoiceServlet extends HttpServlet {
         String userID = req.getParameter("user_id");
         Integer amount = Integer.valueOf(req.getParameter("amount"));
 
-        Invoice invoice = this.invoiceService.create(userID, amount);
+        Invoice invoice = Application.invoiceService.create(userID, amount);
         resp.setContentType("application/json; charset=UTF-8");
-        String json = this.objectMapper.writeValueAsString(invoice);
+        String json = Application.objectMapper.writeValueAsString(invoice);
         resp.getWriter().print(json);
     }
 }
