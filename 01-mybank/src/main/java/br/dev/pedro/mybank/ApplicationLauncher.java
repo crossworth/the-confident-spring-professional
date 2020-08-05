@@ -9,7 +9,7 @@ import org.apache.catalina.startup.Tomcat;
 public class ApplicationLauncher {
     public static void main(String[] args) throws LifecycleException {
         Tomcat tomcat = new Tomcat();
-        tomcat.setPort(8080);
+        tomcat.setPort(Integer.parseInt(System.getProperty("server.port", "8080")));
         tomcat.getConnector();
 
         Context ctx = tomcat.addContext("", null);
