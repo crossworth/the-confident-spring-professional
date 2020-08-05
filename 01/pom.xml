@@ -50,7 +50,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>br.dev.pedro.ApplicationLauncher</mainClass>
+                                    <mainClass>br.dev.pedro.pdfinvoices.ApplicationLauncher</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

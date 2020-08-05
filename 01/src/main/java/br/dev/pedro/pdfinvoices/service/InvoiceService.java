@@ -1,4 +1,6 @@
-package br.dev.pedro;
+package br.dev.pedro.pdfinvoices.service;
+
+import br.dev.pedro.pdfinvoices.model.Invoice;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

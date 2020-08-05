@@ -1,4 +1,4 @@
-package br.dev.pedro;
+package br.dev.pedro.pdfinvoices.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

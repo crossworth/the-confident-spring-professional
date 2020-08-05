@@ -1,5 +1,6 @@
-package br.dev.pedro;
+package br.dev.pedro.pdfinvoices;
 
+import br.dev.pedro.pdfinvoices.web.PDFInvoiceServlet;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
