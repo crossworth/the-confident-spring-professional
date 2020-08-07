@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * ComponentScan scans only the package and subpackages
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.PropertySource;
 @ComponentScan(basePackageClasses = ApplicationLauncher.class)
 @PropertySource("classpath:/application.properties")
 @PropertySource(value = "classpath:/application-${spring.profiles.active}.properties", ignoreResourceNotFound = true)
+@EnableWebMvc // enable Spring Web MVC with default values
 public class PDFInvoiceApplicationConfiguration {
 
     /**
