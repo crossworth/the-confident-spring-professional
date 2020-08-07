@@ -5,6 +5,8 @@ import br.dev.pedro.pdfinvoices.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -25,6 +27,16 @@ public class InvoiceService {
 
     public InvoiceService(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("Setup something before anything...");
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        System.out.println("Teardown something after everything...");
     }
 
     public List<Invoice> findAll() {
