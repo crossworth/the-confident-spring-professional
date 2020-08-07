@@ -2,6 +2,7 @@ package br.dev.pedro.pdfinvoices.service;
 
 import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,13 +10,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 public class InvoiceService {
-    private final UserService userService;
+
+    /**
+     * Older versions of spring needed Autowired annotation on the constructor
+     * to let the the Spring IoC know that the parameters was dependencies
+     * We have to use Autowired only when using multiple constructors
+     * to let spring knows which one to use
+     * <p>
+     * Another way of using is field injection
+     */
+
+    @Autowired
+    private UserService userService = null; // when using Autowired cannot be final
 
     private List<Invoice> invoices = new CopyOnWriteArrayList<>();
-
-    public InvoiceService(UserService userService) {
-        this.userService = userService;
-    }
 
     public List<Invoice> findAll() {
         return this.invoices;
@@ -28,7 +36,7 @@ public class InvoiceService {
         }
 
         // TODO(Pedro): create the real PDF
-        Invoice invoice =  new Invoice(userID, amount, "http://www.africau.edu/images/default/sample.pdf");
+        Invoice invoice = new Invoice(userID, amount, "http://www.africau.edu/images/default/sample.pdf");
         this.invoices.add(invoice);
         return invoice;
     }
