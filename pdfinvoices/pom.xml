@@ -44,6 +44,12 @@
             <artifactId>spring-webmvc</artifactId>
             <version>5.2.7.RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.11.0</version>
+        </dependency>
     </dependencies>
 
     <build>
