@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 public class TransactionService {
     private final List<Transaction> transactions = new CopyOnWriteArrayList<>();
-    private String slogan;
+    private final String slogan;
 
     public TransactionService(@Value("${bank.slogan}") String slogan) {
         this.slogan = slogan;
