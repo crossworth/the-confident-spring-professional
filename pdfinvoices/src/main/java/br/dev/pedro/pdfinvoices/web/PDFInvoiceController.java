@@ -5,6 +5,7 @@ import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.service.InvoiceService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class PDFInvoiceController {
 
     // Request body (json as body)
     @PostMapping("/invoices")
-    public Invoice createInvoiceWithRequestBody(@RequestBody InvoiceDTO invoiceDTO) {
+    public Invoice createInvoiceWithRequestBody(@RequestBody @Valid InvoiceDTO invoiceDTO) {
         return this.invoiceService.create(invoiceDTO.getUserID(), invoiceDTO.getAmount());
     }
 }
