@@ -15,6 +15,9 @@ public class PDFInvoiceApplicationCofiguration {
      * application and that are managed by the Spring IoC container
      * are called beans. A bean is an object that is instantiated,
      * assembled, and otherwise managed by a Spring IoC container.
+     * <p>
+     * By default Beans are singletons, to change to a prototype model
+     * Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
      */
 
     @Bean
