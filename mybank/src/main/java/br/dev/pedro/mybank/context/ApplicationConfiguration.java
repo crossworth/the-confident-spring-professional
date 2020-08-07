@@ -1,19 +1,18 @@
 package br.dev.pedro.mybank.context;
 
-import br.dev.pedro.mybank.service.TransactionService;
+import br.dev.pedro.mybank.ApplicationLauncher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
+@ComponentScan(basePackageClasses = ApplicationLauncher.class)
+@PropertySource("classpath:/application.properties")
 public class ApplicationConfiguration {
-
-    @Bean
-    public TransactionService transactionService() {
-        return new TransactionService();
-    }
 
     @Bean
     public ObjectMapper objectMapper() {

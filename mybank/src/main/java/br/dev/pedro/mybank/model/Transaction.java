@@ -1,5 +1,8 @@
 package br.dev.pedro.mybank.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -11,6 +14,8 @@ public class Transaction {
     private LocalDateTime timestamp;
 
     private String reference;
+
+    private String slogan;
 
     public Transaction() {
     }
@@ -52,5 +57,13 @@ public class Transaction {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public String getSlogan() {
+        return slogan;
+    }
+
+    public void setSlogan(String slogan) {
+        this.slogan = slogan;
     }
 }

@@ -1,10 +1,15 @@
 package br.dev.pedro.pdfinvoices;
 
-import br.dev.pedro.pdfinvoices.web.PDFInvoiceServlet;
+import br.dev.pedro.pdfinvoices.context.PDFInvoiceApplicationConfiguration;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.startup.Tomcat;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
+
+import javax.servlet.ServletContext;
 
 public class ApplicationLauncher {
     public static void main(String[] args) throws LifecycleException {
@@ -14,8 +19,15 @@ public class ApplicationLauncher {
 
         // on context we can specify differents apps on the same tomcat
         // docBase can be a reference for a directory for static files
-        Context ctx = tomcat.addContext("", null);
-        Wrapper servlet = Tomcat.addServlet(ctx, "myFirstServlet", new PDFInvoiceServlet());
+        Context tomcatCtx = tomcat.addContext("", null);
+
+        // create an ApplicationContext
+        WebApplicationContext appCtx = createApplicationContext(tomcatCtx.getServletContext());
+
+        // create a dispatcher that will handle all requests and send to controllers
+        // it need an WebApplicationContext to know where to send the requests
+        DispatcherServlet dispatcherServlet = new DispatcherServlet(appCtx);
+        Wrapper servlet = Tomcat.addServlet(tomcatCtx, "dispatcherServlet", dispatcherServlet);
 
         // load our servlet (otherwise it will load on the first request)
         servlet.setLoadOnStartup(1);
@@ -24,5 +36,14 @@ public class ApplicationLauncher {
         servlet.addMapping("/*");
 
         tomcat.start();
+    }
+
+    public static WebApplicationContext createApplicationContext(ServletContext servletContext) {
+        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+        ctx.register(PDFInvoiceApplicationConfiguration.class);
+        ctx.setServletContext(servletContext);
+        ctx.refresh();
+        ctx.registerShutdownHook();
+        return ctx;
     }
 }
