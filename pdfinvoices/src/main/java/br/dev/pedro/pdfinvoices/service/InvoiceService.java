@@ -19,14 +19,13 @@ public class InvoiceService {
      * <p>
      * Another way of using is field injection or setter injection
      */
-    private UserService userService = null;
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     private List<Invoice> invoices = new CopyOnWriteArrayList<>();
+
+    public InvoiceService(UserService userService) {
+        this.userService = userService;
+    }
 
     public List<Invoice> findAll() {
         return this.invoices;
