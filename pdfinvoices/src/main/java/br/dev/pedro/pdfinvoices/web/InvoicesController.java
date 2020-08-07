@@ -20,10 +20,10 @@ import java.util.List;
 
 @RestController // this is a rest controller (a Controller with ResponseBody)
 @Validated // tell spring that the methods should be validated
-public class PDFInvoiceController {
+public class InvoicesController {
     private final InvoiceService invoiceService;
 
-    public PDFInvoiceController(InvoiceService invoiceService) {
+    public InvoicesController(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
     }
 

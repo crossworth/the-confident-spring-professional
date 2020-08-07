@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 // ControllerAdvice write html to the response, RestController write xml, json or another format
 
 @RestControllerAdvice // tell spring to apply what this class contains to all Controllers and RestControllers
-public class GlobalControllerExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
