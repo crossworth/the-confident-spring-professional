@@ -3,9 +3,13 @@ package br.dev.pedro.pdfinvoices.web;
 import br.dev.pedro.pdfinvoices.dto.InvoiceDTO;
 import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.service.InvoiceService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -15,6 +19,7 @@ import java.util.List;
  */
 
 @RestController // this is a rest controller (a Controller with ResponseBody)
+@Validated // tell spring that the methods should be validated
 public class PDFInvoiceController {
     private final InvoiceService invoiceService;
 
@@ -33,7 +38,7 @@ public class PDFInvoiceController {
      * It will try convert the param to the correct type as well
      */
     @PostMapping("/invoices/query_string")
-    public Invoice createInvoiceWithQueryString(@RequestParam("user_id") String userID, @RequestParam Integer amount) {
+    public Invoice createInvoiceWithRequestParam(@RequestParam("user_id") @NotBlank String userID, @RequestParam @Min(10) @Max(50) Integer amount) {
         return this.invoiceService.create(userID, amount);
     }
 
