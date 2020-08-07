@@ -1,6 +1,6 @@
 package br.dev.pedro.pdfinvoices.web;
 
-import br.dev.pedro.pdfinvoices.context.PDFInvoiceApplicationCofiguration;
+import br.dev.pedro.pdfinvoices.context.PDFInvoiceApplicationConfiguration;
 import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.service.InvoiceService;
 import br.dev.pedro.pdfinvoices.service.UserService;
@@ -21,7 +21,7 @@ public class PDFInvoiceServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(PDFInvoiceApplicationCofiguration.class);
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(PDFInvoiceApplicationConfiguration.class);
 
         ctx.registerShutdownHook();
 

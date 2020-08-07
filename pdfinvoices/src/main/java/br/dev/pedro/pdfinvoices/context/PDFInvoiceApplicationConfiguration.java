@@ -5,17 +5,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * ComponentScan scans only the package and subpackages
  * so we need to change the basePackage
- *
+ * <p>
  * SpringBootApplication is also a ComponentScan
  */
 
 @Configuration
 @ComponentScan(basePackageClasses = ApplicationLauncher.class)
-public class PDFInvoiceApplicationCofiguration {
+@PropertySource("classpath:/application.properties")
+@PropertySource(value = "classpath:/application-${spring.profiles.active}.properties", ignoreResourceNotFound = true)
+public class PDFInvoiceApplicationConfiguration {
 
     /**
      * Bean

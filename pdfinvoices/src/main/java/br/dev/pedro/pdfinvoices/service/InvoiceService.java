@@ -3,6 +3,7 @@ package br.dev.pedro.pdfinvoices.service;
 import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -21,12 +22,14 @@ public class InvoiceService {
      * <p>
      * Another way of using is field injection or setter injection
      */
-    private UserService userService;
+    private final UserService userService;
+    private final String cdnURL;
 
     private List<Invoice> invoices = new CopyOnWriteArrayList<>();
 
-    public InvoiceService(UserService userService) {
+    public InvoiceService(UserService userService, @Value("${cdn.url}") String cdnURL) {
         this.userService = userService;
+        this.cdnURL = cdnURL;
     }
 
     @PostConstruct
@@ -50,7 +53,7 @@ public class InvoiceService {
         }
 
         // TODO(Pedro): create the real PDF
-        Invoice invoice = new Invoice(userID, amount, "http://www.africau.edu/images/default/sample.pdf");
+        Invoice invoice = new Invoice(userID, amount, this.cdnURL + "/images/default/sample.pdf");
         this.invoices.add(invoice);
         return invoice;
     }
