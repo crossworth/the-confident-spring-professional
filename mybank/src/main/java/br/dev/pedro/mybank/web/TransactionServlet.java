@@ -1,7 +1,10 @@
 package br.dev.pedro.mybank.web;
 
-import br.dev.pedro.mybank.context.Application;
+import br.dev.pedro.mybank.context.ApplicationConfiguration;
 import br.dev.pedro.mybank.model.Transaction;
+import br.dev.pedro.mybank.service.TransactionService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +16,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TransactionServlet extends HttpServlet {
+    private TransactionService transactionService;
+    private ObjectMapper objectMapper;
+
+    @Override
+    public void init() throws ServletException {
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
+        this.transactionService = ctx.getBean(TransactionService.class);
+        this.objectMapper = ctx.getBean(ObjectMapper.class);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json; charset=UTF-8");
@@ -22,8 +35,8 @@ public class TransactionServlet extends HttpServlet {
             return;
         }
 
-        List<Transaction> transactions = Application.transactionService.findAll();
-        resp.getWriter().print(Application.objectMapper.writeValueAsString(transactions));
+        List<Transaction> transactions = this.transactionService.findAll();
+        resp.getWriter().print(this.objectMapper.writeValueAsString(transactions));
     }
 
     @Override
@@ -44,8 +57,8 @@ public class TransactionServlet extends HttpServlet {
         LocalDateTime timestamp = LocalDateTime.parse(req.getParameter("timestamp"), formatter);
         String reference = req.getParameter("reference");
 
-        Transaction transaction = Application.transactionService.create(amount, timestamp, reference);
-        resp.getWriter().print(Application.objectMapper.writeValueAsString(transaction));
+        Transaction transaction = this.transactionService.create(amount, timestamp, reference);
+        resp.getWriter().print(this.objectMapper.writeValueAsString(transaction));
     }
 }
 
