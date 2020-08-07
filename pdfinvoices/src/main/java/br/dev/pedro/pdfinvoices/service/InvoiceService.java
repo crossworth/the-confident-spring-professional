@@ -17,11 +17,14 @@ public class InvoiceService {
      * We have to use Autowired only when using multiple constructors
      * to let spring knows which one to use
      * <p>
-     * Another way of using is field injection
+     * Another way of using is field injection or setter injection
      */
+    private UserService userService = null;
 
     @Autowired
-    private UserService userService = null; // when using Autowired cannot be final
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     private List<Invoice> invoices = new CopyOnWriteArrayList<>();
 
