@@ -1,9 +1,11 @@
 package br.dev.pedro.pdfinvoices.web;
 
-import br.dev.pedro.pdfinvoices.context.Application;
+import br.dev.pedro.pdfinvoices.context.PDFInvoiceApplicationCofiguration;
 import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.service.InvoiceService;
+import br.dev.pedro.pdfinvoices.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +15,18 @@ import java.io.IOException;
 import java.util.List;
 
 public class PDFInvoiceServlet extends HttpServlet {
+    private UserService userService;
+    private ObjectMapper objectMapper;
+    private InvoiceService invoiceService;
+
+    @Override
+    public void init() throws ServletException {
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(PDFInvoiceApplicationCofiguration.class);
+        this.userService = ctx.getBean(UserService.class);
+        this.objectMapper = ctx.getBean(ObjectMapper.class);
+        this.invoiceService = ctx.getBean(InvoiceService.class);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -28,8 +42,8 @@ public class PDFInvoiceServlet extends HttpServlet {
             );
         } else if (req.getRequestURI().equalsIgnoreCase("/invoices")) {
             resp.setContentType("application/json; charset=UTF-8");
-            List<Invoice> invoices = Application.invoiceService.findAll();
-            resp.getWriter().print(Application.objectMapper.writeValueAsString(invoices));
+            List<Invoice> invoices = this.invoiceService.findAll();
+            resp.getWriter().print(this.objectMapper.writeValueAsString(invoices));
         }
     }
 
@@ -44,9 +58,9 @@ public class PDFInvoiceServlet extends HttpServlet {
         String userID = req.getParameter("user_id");
         Integer amount = Integer.valueOf(req.getParameter("amount"));
 
-        Invoice invoice = Application.invoiceService.create(userID, amount);
+        Invoice invoice = this.invoiceService.create(userID, amount);
         resp.setContentType("application/json; charset=UTF-8");
-        String json = Application.objectMapper.writeValueAsString(invoice);
+        String json = this.objectMapper.writeValueAsString(invoice);
         resp.getWriter().print(json);
     }
 }

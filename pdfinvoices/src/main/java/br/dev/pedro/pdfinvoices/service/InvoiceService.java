@@ -1,6 +1,5 @@
 package br.dev.pedro.pdfinvoices.service;
 
-import br.dev.pedro.pdfinvoices.context.Application;
 import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.model.User;
 
