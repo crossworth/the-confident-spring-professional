@@ -2,10 +2,7 @@ package br.dev.pedro.pdfinvoices.web;
 
 import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.service.InvoiceService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +24,14 @@ public class PDFInvoiceController {
 //    @RequestMapping(value = "/invoices", method = RequestMethod.GET) // same as GetMapping
     public List<Invoice> invoices() {
         return this.invoiceService.findAll();
+    }
+
+    /**
+     * RequestParam tell spring that we **need* a param with the names provides (var name if no name is provided)
+     * It will try convert the param to the correct type as well
+     */
+    @PostMapping("/invoices")
+    public Invoice createInvoice(@RequestParam("user_id") String userID, @RequestParam Integer amount) {
+        return this.invoiceService.create(userID, amount);
     }
 }
