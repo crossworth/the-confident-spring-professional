@@ -1,5 +1,6 @@
 package br.dev.pedro.pdfinvoices.web;
 
+import br.dev.pedro.pdfinvoices.dto.InvoiceDTO;
 import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.service.InvoiceService;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +31,19 @@ public class PDFInvoiceController {
      * RequestParam tell spring that we **need* a param with the names provides (var name if no name is provided)
      * It will try convert the param to the correct type as well
      */
-    @PostMapping("/invoices")
-    public Invoice createInvoice(@RequestParam("user_id") String userID, @RequestParam Integer amount) {
+    @PostMapping("/invoices/query_string")
+    public Invoice createInvoiceWithQueryString(@RequestParam("user_id") String userID, @RequestParam Integer amount) {
         return this.invoiceService.create(userID, amount);
     }
 
-    @PostMapping("/invoices/{userID}/{amount}")
+    @PostMapping("/invoices/path_variables/{userID}/{amount}")
     public Invoice createInvoiceWithPathVariable(@PathVariable String userID, @PathVariable Integer amount) {
         return this.invoiceService.create(userID, amount);
+    }
+
+    // Request body (json as body)
+    @PostMapping("/invoices")
+    public Invoice createInvoiceWithRequestBody(@RequestBody InvoiceDTO invoiceDTO) {
+        return this.invoiceService.create(invoiceDTO.getUserID(), invoiceDTO.getAmount());
     }
 }
