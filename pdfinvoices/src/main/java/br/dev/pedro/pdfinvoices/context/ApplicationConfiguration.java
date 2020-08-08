@@ -43,4 +43,5 @@ public class ApplicationConfiguration {
     public MethodValidationPostProcessor methodValidationPostProcessor() {
         return new MethodValidationPostProcessor();
     }
+
 }
