@@ -3,11 +3,13 @@ package br.dev.pedro.pdfinvoices.web;
 import br.dev.pedro.pdfinvoices.web.forms.LoginForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.Date;
 
 @Controller
@@ -27,7 +29,11 @@ public class WebSiteController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginForm loginForm, Model model) {
+    public String login(@ModelAttribute @Valid LoginForm loginForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "login.html";
+        }
+
         if (loginForm.getUsername().equals(loginForm.getPassword())) {
             return "redirect:/";
         }
