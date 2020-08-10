@@ -2,6 +2,7 @@ package br.dev.pedro.pdfinvoices.context;
 
 import br.dev.pedro.pdfinvoices.ApplicationLauncher;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.h2.jdbcx.JdbcDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+
+import javax.sql.DataSource;
 
 /**
  * ComponentScan scans only the package and subpackages
@@ -70,5 +73,14 @@ public class ApplicationConfiguration {
         templateResolver.setPrefix("classpath:/templates/");
         templateResolver.setCacheable(false);
         return templateResolver;
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        JdbcDataSource ds = new JdbcDataSource();
+        ds.setUrl("jdbc:h2:~/myFirstH2Database");
+        ds.setUser("sa");
+        ds.setPassword("sa");
+        return ds;
     }
 }
