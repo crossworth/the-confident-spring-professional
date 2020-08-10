@@ -6,13 +6,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 public class InvoiceService {
@@ -45,6 +45,7 @@ public class InvoiceService {
         System.out.println("Teardown something after everything...");
     }
 
+    @Transactional
     public List<Invoice> findAll() {
         return this.jdbcTemplate.query("SELECT id, user_id, pdf_url, amount from invoices", (resultSet, i) -> {
             Invoice invoice = new Invoice();
@@ -56,6 +57,7 @@ public class InvoiceService {
         });
     }
 
+    @Transactional
     public Invoice create(String userID, Integer amount) {
         String generatePdfURL = this.cdnURL + "/images/default/sample.pdf";
 
