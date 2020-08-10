@@ -1,16 +1,18 @@
 package br.dev.pedro.pdfinvoices.service;
 
 import br.dev.pedro.pdfinvoices.model.Invoice;
-import br.dev.pedro.pdfinvoices.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.UUID;
 
 @Component
 public class InvoiceService {
@@ -44,18 +46,40 @@ public class InvoiceService {
     }
 
     public List<Invoice> findAll() {
-        return jdbcTemplate.query("SELECT id, user_id, pdf_url, amount from invoices", (resultSet, i) -> {
+        return this.jdbcTemplate.query("SELECT id, user_id, pdf_url, amount from invoices", (resultSet, i) -> {
             Invoice invoice = new Invoice();
             invoice.setId(resultSet.getObject("id").toString());
-            invoice.setPdfURL(resultSet.getString("id"));
-            invoice.setUserID(resultSet.getString("id"));
+            invoice.setPdfURL(resultSet.getString("pdf_url"));
+            invoice.setUserID(resultSet.getString("user_id"));
             invoice.setAmount(resultSet.getInt("amount"));
             return invoice;
         });
     }
 
     public Invoice create(String userID, Integer amount) {
-        throw new IllegalStateException("not implemented");
+        String generatePdfURL = this.cdnURL + "/images/default/sample.pdf";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        this.jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO invoices (user_id, pdf_url, amount) VALUES (?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
+
+            ps.setString(1, userID);
+            ps.setString(2, generatePdfURL);
+            ps.setInt(3, amount);
+            return ps;
+        }, keyHolder);
+
+        String uuid = !keyHolder.getKeys().isEmpty() ? keyHolder.getKeys().values().iterator().next().toString() : null;
+
+        Invoice invoice = new Invoice();
+        invoice.setId(uuid);
+        invoice.setPdfURL(generatePdfURL);
+        invoice.setAmount(amount);
+        invoice.setUserID(userID);
+
+        return invoice;
     }
 
 
