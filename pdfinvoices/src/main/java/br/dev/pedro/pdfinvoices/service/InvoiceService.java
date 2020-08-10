@@ -4,6 +4,7 @@ import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -24,11 +25,11 @@ public class InvoiceService {
      */
     private final UserService userService;
     private final String cdnURL;
+    private final JdbcTemplate jdbcTemplate;
 
-    private List<Invoice> invoices = new CopyOnWriteArrayList<>();
-
-    public InvoiceService(UserService userService, @Value("${cdn.url}") String cdnURL) {
+    public InvoiceService(UserService userService, JdbcTemplate jdbcTemplate, @Value("${cdn.url}") String cdnURL) {
         this.userService = userService;
+        this.jdbcTemplate = jdbcTemplate;
         this.cdnURL = cdnURL;
     }
 
@@ -43,19 +44,18 @@ public class InvoiceService {
     }
 
     public List<Invoice> findAll() {
-        return this.invoices;
+        return jdbcTemplate.query("SELECT id, user_id, pdf_url, amount from invoices", (resultSet, i) -> {
+            Invoice invoice = new Invoice();
+            invoice.setId(resultSet.getObject("id").toString());
+            invoice.setPdfURL(resultSet.getString("id"));
+            invoice.setUserID(resultSet.getString("id"));
+            invoice.setAmount(resultSet.getInt("amount"));
+            return invoice;
+        });
     }
 
     public Invoice create(String userID, Integer amount) {
-        User user = this.userService.findByID(userID);
-        if (user == null) {
-            throw new IllegalStateException();
-        }
-
-        // TODO(Pedro): create the real PDF
-        Invoice invoice = new Invoice(userID, amount, this.cdnURL + "/images/default/sample.pdf");
-        this.invoices.add(invoice);
-        return invoice;
+        throw new IllegalStateException("not implemented");
     }
 
 
