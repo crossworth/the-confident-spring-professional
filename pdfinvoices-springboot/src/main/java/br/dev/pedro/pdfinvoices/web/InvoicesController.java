@@ -21,7 +21,7 @@ public class InvoicesController {
     }
 
     @GetMapping("/invoices")
-    public List<Invoice> invoices() {
+    public Iterable<Invoice> invoices() {
         return this.invoiceService.findAll();
     }
 
