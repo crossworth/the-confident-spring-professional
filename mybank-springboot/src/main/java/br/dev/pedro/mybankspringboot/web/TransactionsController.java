@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 public class TransactionsController {
@@ -20,7 +19,7 @@ public class TransactionsController {
     }
 
     @GetMapping("/transactions")
-    public List<Transaction> transactions() {
+    public Iterable<Transaction> transactions() {
         return this.transactionService.findAll();
     }
 

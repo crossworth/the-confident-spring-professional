@@ -3,17 +3,11 @@ package br.dev.pedro.pdfinvoices.service;
 import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.util.List;
 
 @Component
 public class InvoiceService {

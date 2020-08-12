@@ -1,9 +1,15 @@
 package br.dev.pedro.mybankspringboot.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Table("transactions")
 public class Transaction {
+
+    @Id
     private String id;
 
     private Integer amount;
