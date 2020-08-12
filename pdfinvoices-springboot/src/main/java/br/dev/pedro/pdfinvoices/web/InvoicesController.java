@@ -3,10 +3,7 @@ package br.dev.pedro.pdfinvoices.web;
 import br.dev.pedro.pdfinvoices.dto.InvoiceDTO;
 import br.dev.pedro.pdfinvoices.model.Invoice;
 import br.dev.pedro.pdfinvoices.service.InvoiceService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,6 +20,11 @@ public class InvoicesController {
     @GetMapping("/invoices")
     public Iterable<Invoice> invoices() {
         return this.invoiceService.findAll();
+    }
+
+    @GetMapping("/invoices/user/{userId}")
+    public Iterable<Invoice> invoicesByUserId(@PathVariable String userId) {
+        return this.invoiceService.findByUserId(userId);
     }
 
     @PostMapping("/invoices")
